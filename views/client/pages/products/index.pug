@@ -1,0 +1,31 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+    +box-head("Danh Sách Sản Phẩm")
+    section(style='background-color: #eee;')
+      .text-center.container.py-5
+        h4.mt-4.mb-5
+          strong Bestsellers
+        .row
+          each item in products 
+            .col-lg-4.col-md-12.mb-4
+              .card
+                .bg-image.hover-zoom.ripple.ripple-surface.ripple-surface-light(data-mdb-ripple-color='light')
+                  img.w-100(src= item.thumbnail)
+                  a(href='#!')
+                    .mask
+                      .d-flex.justify-content-start.align-items-end.h-100
+                        h5
+                          span.badge.bg-primary.ms-2 New
+                          span.badge.bg-danger.ms-2 -#{item.discountPercentage}
+                    .hover-overlay
+                      .mask(style='background-color: rgba(251, 251, 251, 0.15);')
+                .card-body
+                  a.text-reset(href=`/products/${item.slug}`)
+                    h5.card-title.mb-3 #{item.title}
+                  a.text-reset(href='')
+                    p Category
+                  h6.mb-3 $#{item.price}
+                  code.mb-3 $#{item.priceNew}
+          

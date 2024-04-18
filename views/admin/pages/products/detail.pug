@@ -1,0 +1,121 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+    h1(title='Thêm Mới Sản Phẩm') #{pageTitle} 
+    +alert-error(3000)
+    +alert-success(3000)
+    .card
+        .card-header #{pageTitle}
+        .card-body
+    form(
+    action=`${prefixAdmin}/products/update/${product.id}/?_method=PATCH`
+    id="form-create-product"
+    method="POST"
+    enctype="multipart/form-data"
+    )
+        div(class="form-group")
+            label(for="title") Tiêu đề
+            input(
+                type="text"
+                class="form-control"
+                id="title"
+                name="title"
+                value=product.title
+                required
+            )
+        //- div(class="form-group")
+        //-   label(for="product_category_id") Danh mục
+        //-   select(
+        //-     name="product_category_id"
+        //-     id="product_category_id"
+        //-     class="form-control"
+        //-   )
+        //-     option(value="") -- Chọn danh mục --
+        //-     if(records)
+        //-       +select-tree(records)
+        //- div(class="form-group form-check form-check-inline")
+        //-   input(
+        //-     type="radio"
+        //-     class="form-check-input"
+        //-     id="featured1"
+        //-     name="featured"
+        //-     value="1"
+        //-   )
+        //-   label(for="featured1" class="form-check-label") Nổi bật
+        //- div(class="form-group form-check form-check-inline")
+        //-   input(
+        //-     type="radio"
+        //-     class="form-check-input"
+        //-     id="featured0"
+        //-     name="featured"
+        //-     value="0"
+        //-     checked
+        //-   )
+        //-   label(for="featured0" class="form-check-label") Không
+        div(class="form-group")
+            label(for="desc") Mô tả
+            textarea(
+                class="form-control"
+                id="desc"
+                name="description"
+                rows="5"
+                textarea-mce
+            ) #{product.description}
+        div(class="form-group")
+            label(for="price") Giá
+            input(
+                type="number"
+                class="form-control"
+                id="price"
+                name="price"
+                value=product.price
+                min="0"
+            )
+        div(class="form-group")
+            label(for="discount") % Giảm giá
+            input(
+                type="number"
+                class="form-control"
+                id="discount"
+                name="discountPercentage"
+                value=product.discountPercentage
+                min="0"
+            )
+        div(class="form-group")
+            label(for="stock") Số lượng
+            input(
+                type="number"
+                class="form-control"
+                id="stock"
+                name="stock"
+                value="0"
+                min="0"
+            )
+        
+        div(class="form-group" upload-image)
+          img(
+            src=product.thumbnail
+            class="image-preview"
+            upload-image-preview
+          )
+        div(class="form-group")
+            label(for="position") Vị trí
+            input(
+                type="number"
+                class="form-control"
+                id="position"
+                name="position"
+                value=product.position
+                placeholder="Tự động tăng"
+                min="1"
+            )
+        div(class="form-group form-check form-check-inline col-12 d-flex")
+            if(product.status == "active")
+                label(for="statusActive" class="badge badge-success") Hoạt động
+            else
+                label(for="statusActive" class="badge badge-danger") Không hoạt động
+        button(
+            type="submit"
+            class="btn btn-primary"
+        ) Cập nhật
