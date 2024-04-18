@@ -3,15 +3,15 @@ header.header
     .row.align-items-center
       .col-3
         .inner-logo
-          a(href=`#`) ADMIN
+          a(href=`/${prefixAdmin}/dashboard`) ADMIN
 
       .col-9
         div(class="text-right")
           a(
-            href=`#`
+            href=`/${prefixAdmin}/my-account`
             class="btn btn-primary btn-sm mr-2"
-          ) Admin
+          ) #{user.fullName}
           a(
-            href=`#`
+            href=`/${prefixAdmin}/auth/logout`
             class="btn btn-danger btn-sm"
           ) Đăng xuất

@@ -1,8 +1,8 @@
 const express = require("express");
-const { dashboard } = require("../../controller/admin/dashboard.controller");
+const router = express.Router();
 
-const DasboardRouter = express.Router();
+const controller = require("../../controllers/admin/dashboard.controller");
 
-DasboardRouter.get("/", dashboard);
+router.get("/", controller.index);
 
-module.exports = DasboardRouter;
+module.exports = router;

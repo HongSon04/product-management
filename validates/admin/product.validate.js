@@ -1,17 +1,15 @@
-const valiteCreateProduct = (req, res, next) => {
-  if (!req.body.title) {
-    req.flash("error", "Tiêu đề sản phẩm không được để trống");
-    return res.redirect("back");
+module.exports.createPost = async (req, res, next) => {
+  if(!req.body.title) {
+    req.flash("error", "Tiêu đề không được để trống!");
+    res.redirect("back");
+    return;
   }
-  if (req.body.title.length > 255) {
-    req.flash("error", "Tiêu đề sản phẩm không được vượt quá 255 ký tự");
-    return res.redirect("back");
-  }
-  if (req.body.title.length < 10) {
-    req.flash("error", "Tiêu đề sản phẩm không được ít hơn 10 ký tự");
-    return res.redirect("back");
-  }
-  next();
-};
 
-module.exports = { valiteCreateProduct };
+  if(req.body.title.length < 5) {
+    req.flash("error", "Tiêu đề phải chứa ít nhất 5 ký tự!");
+    res.redirect("back");
+    return;
+  }
+
+  next();
+}

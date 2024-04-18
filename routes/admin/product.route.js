@@ -1,47 +1,46 @@
 const express = require("express");
+const router = express.Router();
 const multer = require("multer");
-const storageMulter = require("../../helpers/storageMulter");
-const {
-  valiteCreateProduct,
-} = require("../../validates/admin/product.validate");
 
-const upload = multer({ storage: storageMulter() });
-const {
-  index,
-  changeStatus,
-  changeMulti,
-  deleteItem,
-  create,
-  storeProduct,
-  edit,
-  update,
-  detail,
-} = require("../../controller/admin/product.controller");
+// const storageMulter = require("../../helpers/storage-multer.helper");
 
-const ProductRoute = express.Router();
+// const upload = multer({ storage: storageMulter() });
 
-ProductRoute.get("/", index);
-ProductRoute.patch("/change-status/:status/:id", changeStatus);
-ProductRoute.patch("/change-multi", changeMulti);
-ProductRoute.delete("/delete/:id", deleteItem);
+const upload = multer();
 
-ProductRoute.get("/create", create);
-ProductRoute.post(
+const controller = require("../../controllers/admin/product.controller");
+const validate = require("../../validates/admin/product.validate");
+
+const uploadCloud = require("../../middlewares/admin/uploadCloud.middleware");
+
+router.get("/", controller.index);
+
+router.patch("/change-status/:status/:id", controller.changeStatus);
+
+router.patch("/change-multi", controller.changeMulti);
+
+router.delete("/delete/:id", controller.deleteItem);
+
+router.get("/create", controller.create);
+
+router.post(
   "/create",
   upload.single("thumbnail"),
-  valiteCreateProduct,
-  storeProduct
+  uploadCloud.uploadSingle,
+  validate.createPost,
+  controller.createPost
 );
 
-ProductRoute.get("/edit/:id", edit);
-ProductRoute.patch(
-  "/update/:id",
+router.get("/edit/:id", controller.edit);
+
+router.patch(
+  "/edit/:id",
   upload.single("thumbnail"),
-  valiteCreateProduct,
-  update
+  uploadCloud.uploadSingle,
+  validate.createPost,
+  controller.editPatch
 );
 
-ProductRoute.get("/detail/:id", detail);
+router.get("/detail/:id", controller.detail);
 
-
-module.exports = ProductRoute;
+module.exports = router;

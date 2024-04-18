@@ -57,7 +57,7 @@ if (buttonsPagination.length > 0) {
 // End Pagination
 
 // button-change-status
-/* const buttonsChangeStatus = document.querySelectorAll("[button-change-status]");
+const buttonsChangeStatus = document.querySelectorAll("[button-change-status]");
 if (buttonsChangeStatus.length > 0) {
   const formChangeStatus = document.querySelector("[form-change-status]");
   const path = formChangeStatus.getAttribute("data-path");
@@ -76,28 +76,7 @@ if (buttonsChangeStatus.length > 0) {
       formChangeStatus.submit();
     });
   });
-} */
-// ? Change Status
-const buttonsChangeStatus = document.querySelectorAll("[button-change-status]");
-if (buttonsChangeStatus.length > 0) {
-  buttonsChangeStatus.forEach((button) => {
-    button.addEventListener("click", () => {
-      const formChangeStatus = document.querySelector("#form-change-status");
-      const path = formChangeStatus.getAttribute("data-path");
-
-      const statusCurrent = button.getAttribute("data-status");
-      const id = button.getAttribute("data-id");
-
-      let statusChange = statusCurrent == "active" ? "inactive" : "active";
-
-      const action = path + `/${statusChange}/${id}?_method=PATCH`;
-      formChangeStatus.action = action;
-
-      formChangeStatus.submit();
-    });
-  });
 }
-
 // End button-change-status
 
 // checkbox-multi
@@ -161,7 +140,7 @@ if (formChangeMulti) {
             .closest("tr")
             .querySelector("input[name='position']").value;
 
-          ids.push(`${id}-${position}`);
+            ids.push(`${id}-${position}`);
         } else {
           ids.push(id);
         }
@@ -180,9 +159,10 @@ if (formChangeMulti) {
 // Delete Item
 const buttonsDelete = document.querySelectorAll("[button-delete]");
 if (buttonsDelete.length > 0) {
+  const formDeleteItem = document.querySelector("[form-delete-item]");
+  const path = formDeleteItem.getAttribute("data-path");
+
   buttonsDelete.forEach((button) => {
-    const formDeleteItem = document.querySelector("#form-delete-item");
-    const path = formDeleteItem.getAttribute("data-path");
     button.addEventListener("click", () => {
       const isConfirm = confirm("Bạn có chắc muốn xóa bản ghi này?");
 
@@ -202,7 +182,7 @@ if (buttonsDelete.length > 0) {
 
 // Show Alert
 const showAlert = document.querySelector("[show-alert]");
-if (showAlert) {
+if(showAlert) {
   const time = parseInt(showAlert.getAttribute("data-time"));
   setTimeout(() => {
     showAlert.classList.add("alert-hidden");
@@ -217,16 +197,11 @@ if (showAlert) {
 
 // Preview Image
 const uploadImage = document.querySelector("[upload-image]");
-if (uploadImage) {
+if(uploadImage) {
   const uploadImageInput = uploadImage.querySelector("[upload-image-input]");
-  const uploadImagePreview = uploadImage.querySelector(
-    "[upload-image-preview]"
-  );
+  const uploadImagePreview = uploadImage.querySelector("[upload-image-preview]");
 
   uploadImageInput.addEventListener("change", (event) => {
-    // const file = uploadImageInput.files[0];
-    // const file = event.target.files[0];
-
     const [file] = uploadImageInput.files;
     if (file) {
       uploadImagePreview.src = URL.createObjectURL(file);
@@ -237,7 +212,7 @@ if (uploadImage) {
 
 // Sort
 const sort = document.querySelector("[sort]");
-if (sort) {
+if(sort) {
   let url = new URL(window.location.href);
 
   const sortSelect = sort.querySelector("[sort-select]");
@@ -265,11 +240,9 @@ if (sort) {
   const sortKey = url.searchParams.get("sortKey");
   const sortValue = url.searchParams.get("sortValue");
 
-  if (sortKey && sortValue) {
+  if(sortKey && sortValue) {
     const string = `${sortKey}-${sortValue}`;
-    const optionSelected = sortSelect.querySelector(
-      `option[value="${string}"]`
-    );
+    const optionSelected = sortSelect.querySelector(`option[value="${string}"]`);
     optionSelected.selected = true;
     // optionSelected.setAttribute("selected", true);
   }
@@ -278,54 +251,48 @@ if (sort) {
 
 // Permissions
 const tablePermissions = document.querySelector("[table-permissions]");
-if (tablePermissions) {
+if(tablePermissions) {
   // Submit Data
   const buttonSubmit = document.querySelector("[button-submit]");
   buttonSubmit.addEventListener("click", () => {
     const roles = [];
 
     const rows = tablePermissions.querySelectorAll("[data-name]");
-    rows.forEach((row) => {
+    rows.forEach(row => {
       const name = row.getAttribute("data-name");
       const inputs = row.querySelectorAll("input");
-      if (name == "id") {
-        inputs.forEach((input) => {
+      if(name == "id") {
+        inputs.forEach(input => {
           const id = input.value;
           roles.push({
             id: id,
-            permissions: [],
+            permissions: []
           });
         });
       } else {
         inputs.forEach((input, index) => {
-          if (input.checked) {
+          if(input.checked) {
             roles[index].permissions.push(name);
           }
         });
       }
     });
 
-    const formChangePermissions = document.querySelector(
-      "[form-change-permissions]"
-    );
-    const inputRoles = formChangePermissions.querySelector(
-      "input[name='roles']"
-    );
+    const formChangePermissions = document.querySelector("[form-change-permissions]");
+    const inputRoles = formChangePermissions.querySelector("input[name='roles']");
     inputRoles.value = JSON.stringify(roles);
     formChangePermissions.submit();
   });
 
   // Data Default
   const divRecords = document.querySelector("[data-records]");
-  if (divRecords) {
+  if(divRecords) {
     const records = JSON.parse(divRecords.getAttribute("data-records"));
     records.forEach((record, index) => {
       const permissions = record.permissions;
-
-      permissions.forEach((permission) => {
-        const row = tablePermissions.querySelector(
-          `[data-name="${permission}"]`
-        );
+      
+      permissions.forEach(permission => {
+        const row = tablePermissions.querySelector(`[data-name="${permission}"]`);
         const input = row.querySelectorAll("input")[index];
         input.checked = true;
       });
